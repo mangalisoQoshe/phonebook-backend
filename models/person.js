@@ -15,9 +15,20 @@ mongoose
     console.log("Error connecting to MongoDB", error.message);
   });
 
+function validator(val) {
+  if (val.length >= 8) {
+    const parts = val.split("-");
+    if (parts[0].length < 2 || parts[0].length > 3 || parts.length !== 2) {
+      return false;
+    }
+    return true;
+  }
+  return false;
+}
+
 const personSchema = new mongoose.Schema({
   name: { type: String, minLength: 3, required: true },
-  number: String,
+  number: {type:String, validate: validator}
 });
 
 personSchema.set("toJSON", {
